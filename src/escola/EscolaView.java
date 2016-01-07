@@ -4,10 +4,12 @@ import java.awt.*;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class EscolaView extends JFrame implements ActionListener {
+    
     
     JFrame mainFrame = new JFrame("Escola");
     JPanel mainContentWrapper = new JPanel();
@@ -33,18 +35,7 @@ public class EscolaView extends JFrame implements ActionListener {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setTitle("App bue fixe");
-        
-//        JPanel menuPanel = new JPanel();
-//        JButton addAlunoBtn = new JButton("Adicionar aluno");
-//        JButton remAlunoBtn = new JButton("Remover aluno");
-//        JButton addCursoBtn = new JButton("Adicionar curso");
-//        JButton remCursoBtn = new JButton("Remover curso");
-//        JButton addCadeiraBtn = new JButton("Adicionar cadeira");
-//        JButton remCadeiraBtn = new JButton("Remover cadeira");
-//        JButton verNotasBtn = new JButton("Ver notas");
-//        JButton addNotasBtn = new JButton("Adicionar nota");
-        
-        
+
         menuPanel.setLayout(new GridLayout(8,1));
         
         menuPanel.add(verNotasBtn);
@@ -67,6 +58,7 @@ public class EscolaView extends JFrame implements ActionListener {
         addEventListeners();
         
     }
+
     
     private void addEventListeners() {
         ActionListener addAluno = new ActionListener() {
@@ -76,12 +68,12 @@ public class EscolaView extends JFrame implements ActionListener {
                 addAlunoView();
             }
         };
-        
+       
         ActionListener verNotas = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                geralView(CursosList.get());
+                geralView();
             }
         };
         
@@ -91,55 +83,51 @@ public class EscolaView extends JFrame implements ActionListener {
         
     }
     
-    public void geralView(Curso[] cursos) {
+    public void geralView() {
         JPanel mainContent = new JPanel(new GridLayout(20,1));
-        for(int i = 0; i < CursosList.length(); i++) {
-            int numeroAlunos = CursosList.get(i).alunosLength();
+        for(int i = 0; i < Escola.alunosLength(); i++) {
+            Aluno aluno = Escola.getAluno(i);
+            JPanel holder = new JPanel();
+
+            JLabel numeroAluno = new JLabel(String.valueOf(aluno.getNumero()));
+
+            JLabel nomeAluno = new JLabel(aluno.getNome());
+            JLabel idadeAluno = new JLabel(String.valueOf(aluno.getIdade()));
+            JLabel emailAluno = new JLabel(aluno.getEmail());
             
-            for(int j = 0; j < numeroAlunos; j++) {
-                JPanel holder = new JPanel();
-                Curso curso = CursosList.get(i);
-                
-                JLabel numeroAluno = new JLabel(String.valueOf(CursosList.get(i).getAluno(j).getNumero()));
-                
-                JLabel nomeAluno = new JLabel(CursosList.get(i).getAluno(j).getNome());
-                JLabel idadeAluno = new JLabel(String.valueOf(CursosList.get(i).getAluno(j).getIdade()));
-                JLabel emailAluno = new JLabel(CursosList.get(i).getAluno(j).getEmail());
-                
-                JLabel cursoAluno = new JLabel(CursosList.get(i).getNomeCurso());
-                JLabel turmaAluno = new JLabel(String.valueOf(CursosList.get(i).getTurma()));
-                
-                JButton verNotas = new JButton("Ver notas");
-                JButton removerAluno = new JButton("Remover");
-                
-                holder.add(numeroAluno);
-                holder.add(nomeAluno);
-                holder.add(idadeAluno);
-                holder.add(emailAluno);
-                holder.add(cursoAluno);
-                holder.add(turmaAluno);
-                holder.add(verNotas);
-                holder.add(removerAluno);
-                
-                removerAluno.putClientProperty("numeroAluno", j);
-                
-                mainContent.add(holder);
-                
-                ActionListener removeBtn = new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent ae) {
-                        Object source = ae.getSource();
-                        JButton btn = (JButton)source;
-                        // https://www.daniweb.com/programming/software-development/threads/410191/getclientproperty
-                        int remIndex = (int)btn.getClientProperty("numeroAluno");
-                        
-                        removeAlunoObj(remIndex, curso);
-                        
-                    }
-                };
-                addEvent(removerAluno, removeBtn);
-                
-            }
+            int cursoIndex = aluno.getCursoIndex();
+            JLabel cursoAluno = new JLabel(Escola.getCurso(cursoIndex).getNomeCurso());
+            //JLabel turmaAluno = new JLabel(String.valueOf(Escola.getCurso(cursoIndex).getTurma()));
+
+            JButton verNotas = new JButton("Ver notas");
+            JButton removerAluno = new JButton("Remover");
+
+            holder.add(numeroAluno);
+            holder.add(nomeAluno);
+            holder.add(idadeAluno);
+            holder.add(emailAluno);
+            holder.add(cursoAluno);
+            //holder.add(turmaAluno);
+            holder.add(verNotas);
+            holder.add(removerAluno);
+
+            removerAluno.putClientProperty("numeroAluno", aluno.getNumero());
+
+            mainContent.add(holder);
+
+            ActionListener removeBtn = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    Object source = ae.getSource();
+                    JButton btn = (JButton)source;
+                    // https://www.daniweb.com/programming/software-development/threads/410191/getclientproperty
+                    int remIndex = (int)btn.getClientProperty("numeroAluno");
+
+                    removeAlunoObj(aluno);
+
+                }
+            };
+            addEvent(removerAluno, removeBtn);
         }
         
         mainContent.setBackground(Color.yellow);
@@ -147,9 +135,9 @@ public class EscolaView extends JFrame implements ActionListener {
     }
     
     // mudar de sitio
-    public void removeAlunoObj(int index, Curso curso) {
-        curso.remAluno(index);
-        geralView(CursosList.get());
+    public void removeAlunoObj(Aluno aluno) {
+        Escola.remAluno(aluno);
+        geralView();
     }
     
     public void addAlunoView() {
@@ -203,11 +191,13 @@ public class EscolaView extends JFrame implements ActionListener {
             String nome = nomeTf.getText();
             int idade = Integer.parseInt(idadeTf.getText());
             String email = emailTf.getText();
+            // como ir burcar o indice à combobox, talvez ir buscar o obj directamente
+            int cursoIndex = 0;
             
-            Aluno aluno = new Aluno(nome, idade, email);
+            Aluno aluno = new Aluno(cursoIndex, nome, idade, email);
             
             // adicionar a um curso especifico
-            CursosList.get(1).addAluno(aluno);
+            Escola.addAluno(aluno);
            
             // colocar mais excepcoes
         } catch(Exception ex) {
@@ -327,5 +317,8 @@ public class EscolaView extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    
+    
     
 }

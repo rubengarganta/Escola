@@ -22,7 +22,8 @@ public class CursoMultimedia extends Curso {
     
     @Override
     public String getNomeCurso() {
-        return CursoMultimedia.nomeCurso;
+        String nome = CursoMultimedia.nomeCurso + this.getTurma();
+        return nome;
     }
     
     public final char setTurma(int totalCursos) {

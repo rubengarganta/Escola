@@ -23,6 +23,7 @@ public final class Aluno {
     private final int numero;
     private int idade;
     private String email;
+    private int cursoIndex;
     // estado do aluno: "matriculado", "inactivo"
     private String estado;  // mudar para bool isMatriculado
     // array com 100 linhas por 20 colunas, cada linha representa uma disciplina
@@ -33,7 +34,9 @@ public final class Aluno {
     
     
     
-    
+    public int getCursoIndex() {
+        return cursoIndex;
+    }
     
     public void setNome(String nome) {
         this.nome = nome;
@@ -151,7 +154,8 @@ public final class Aluno {
     
     
     // Construtores
-    Aluno(String nome, int idade, String email) {
+    Aluno(int cursoIndex, String nome, int idade, String email) {
+        this.cursoIndex = cursoIndex;
         this.nome = nome;
         this.idade = idade;
         this.email = email;
@@ -159,7 +163,8 @@ public final class Aluno {
         this.setEstado("matriculado");
     }
     
-    Aluno(String nome, String email) {
+    Aluno(int cursoIndex, String nome, String email) {
+        this.cursoIndex = cursoIndex;
         this.nome = nome;
         this.idade = 0;
         this.email = email;
@@ -167,11 +172,14 @@ public final class Aluno {
         this.setEstado("matriculado");
     }
     
-    Aluno(String nome) {
+    Aluno(int cursoIndex, String nome) {
+        this.cursoIndex = cursoIndex;
         this.nome = nome;
         this.idade = 0;
         this.email = "";
-        this.numero = Aluno.novoAluno();
+        //this.numero = Aluno.novoAluno();
+        this.numero = ultimoAluno;
+        ultimoAluno++;
         this.setEstado("matriculado");
     }
     

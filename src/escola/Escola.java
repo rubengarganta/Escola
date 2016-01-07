@@ -5,7 +5,7 @@
  */
 package escola;
 
-import javax.swing.JTextField;
+import java.util.ArrayList;
 
 /**
  *
@@ -26,6 +26,59 @@ public class Escola {
         Escola.totalMatriculas--;
     }
     
+    private static final ArrayList<Curso> Cursos = new ArrayList<>();
+    private static final ArrayList<Aluno> Alunos = new ArrayList<>();
+    private static final ArrayList<Cadeira> Cadeiras = new ArrayList<>();
+    
+    public static void addCurso(Curso curso) {
+        Cursos.add(curso);
+    }
+    
+    public static Curso getCurso(int index) {
+        return Cursos.get(index);
+    }
+    
+    public static void remCurso(Curso curso) {
+        Cursos.remove(curso);
+    }
+    
+    public static int cursosLenght() {
+        return Cursos.size();
+    }
+    
+    public static void addAluno(Aluno aluno) {
+        Alunos.add(aluno);
+    }
+    
+    public static Aluno getAluno(int index) {
+        return Alunos.get(index);
+    }
+    
+    public static void remAluno(Aluno aluno) {
+        Alunos.remove(aluno);
+    }
+    
+    public static int alunosLength() {
+        return Alunos.size();
+    }
+    
+    public static void addCadeira(Cadeira cadeira) {
+        Cadeiras.add(cadeira);
+    }
+    
+    public static Cadeira getCadeira(int index) {
+        return Cadeiras.get(index);
+    }
+    
+    public static void remCadeira(Cadeira cadeira) {
+        Cadeiras.remove(cadeira);
+    }
+    
+    public static int cadeirasLength() {
+        return Cadeiras.size();
+    }
+    
+    
     Escola() {
         
     }
@@ -42,6 +95,8 @@ public class Escola {
         CursosList.add(curso4);
         CursosList.add(curso5);
         
+        Escola.addCurso(curso5);
+        System.out.println("DEBUG" + Escola.getCurso(0).getNomeCurso());
         
         System.out.println(CursosList.get(0).getCoordenador());
         
@@ -50,13 +105,20 @@ public class Escola {
         System.out.println(CursosList.get(1).getCadeira(0).getNumero());
         System.out.println(CursosList.get(1).getCadeira(0));
         
-        Aluno aluno1 = new Aluno("Andre1");
-        Aluno aluno2 = new Aluno("Andre2");
-        Aluno aluno3 = new Aluno("Andre3");
-        Aluno aluno4 = new Aluno("Andre4");
-        Aluno aluno5 = new Aluno("Andre5");
-        Aluno aluno6 = new Aluno("Andre6");
-        Aluno aluno7 = new Aluno("Ruben");
+        Aluno aluno1 = new Aluno(0, "Andre1");
+        Aluno aluno2 = new Aluno(0, "Andre2");
+        Aluno aluno3 = new Aluno(0, "Andre3");
+        Aluno aluno4 = new Aluno(0, "Andre4");
+        Aluno aluno5 = new Aluno(0, "Andre5");
+        Aluno aluno6 = new Aluno(0, "Andre6");
+        Aluno aluno7 = new Aluno(0, "Ruben");
+        Escola.addAluno(aluno1);
+        Escola.addAluno(aluno2);
+        Escola.addAluno(aluno3);
+        Escola.addAluno(aluno4);
+        Escola.addAluno(aluno5);
+        Escola.addAluno(aluno6);
+        Escola.addAluno(aluno7);
         CursosList.get(0).addAluno(aluno1);
         CursosList.get(1).addAluno(aluno2);
         CursosList.get(2).addAluno(aluno3);
@@ -71,6 +133,10 @@ public class Escola {
         
         EscolaView mainView = new EscolaView();
         
+        
+        
+        // talvez "enviar" o object do curso quando instanciamos um alunos
+        // envez de se enviar o index do curso
         //mainView.geralView(cursos);
         mainView.addAlunoView();
         

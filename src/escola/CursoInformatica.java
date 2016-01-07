@@ -31,7 +31,8 @@ public class CursoInformatica extends Curso {
     
     @Override
     public String getNomeCurso() {
-        return CursoInformatica.nomeCurso;
+        String nome = CursoInformatica.nomeCurso + this.getTurma();
+        return nome;
     }
     
     
