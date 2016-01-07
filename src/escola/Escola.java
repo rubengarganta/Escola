@@ -156,7 +156,7 @@ public class Escola {
         // talvez "enviar" o object do curso quando instanciamos um alunos
         // envez de se enviar o index do curso
         //mainView.geralView(cursos);
-        mainView.addAlunoView();
+        mainView.verAlunosView();
         
         
     }
