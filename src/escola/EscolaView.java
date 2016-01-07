@@ -61,20 +61,12 @@ public class EscolaView extends JFrame implements ActionListener {
 
     
     private void addEventListeners() {
-        ActionListener addAluno = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                addAlunoView();
-            }
+        ActionListener addAluno = (ActionEvent ae) -> {
+            addAlunoView();
         };
        
-        ActionListener verNotas = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                geralView();
-            }
+        ActionListener verNotas = (ActionEvent ae) -> {
+            geralView();
         };
         
         
@@ -95,9 +87,8 @@ public class EscolaView extends JFrame implements ActionListener {
             JLabel idadeAluno = new JLabel(String.valueOf(aluno.getIdade()));
             JLabel emailAluno = new JLabel(aluno.getEmail());
             
-            int cursoIndex = aluno.getCursoIndex();
-            JLabel cursoAluno = new JLabel(Escola.getCurso(cursoIndex).getNomeCurso());
-            //JLabel turmaAluno = new JLabel(String.valueOf(Escola.getCurso(cursoIndex).getTurma()));
+            //int cursoIndex = aluno.getCursoIndex();
+            JLabel cursoAluno = new JLabel(aluno.getCurso().getNomeCurso());
 
             JButton verNotas = new JButton("Ver notas");
             JButton removerAluno = new JButton("Remover");
@@ -107,38 +98,80 @@ public class EscolaView extends JFrame implements ActionListener {
             holder.add(idadeAluno);
             holder.add(emailAluno);
             holder.add(cursoAluno);
-            //holder.add(turmaAluno);
             holder.add(verNotas);
             holder.add(removerAluno);
 
-            removerAluno.putClientProperty("numeroAluno", aluno.getNumero());
+            //removerAluno.putClientProperty("numeroAluno", aluno.getNumero());
 
             mainContent.add(holder);
 
-            ActionListener removeBtn = new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    Object source = ae.getSource();
-                    JButton btn = (JButton)source;
-                    // https://www.daniweb.com/programming/software-development/threads/410191/getclientproperty
-                    int remIndex = (int)btn.getClientProperty("numeroAluno");
-
-                    removeAlunoObj(aluno);
-
-                }
+            ActionListener removeBtnEvt = (ActionEvent ae) -> {
+                //Object source = ae.getSource();
+                //JButton btn = (JButton)source;
+                // https://www.daniweb.com/programming/software-development/threads/410191/getclientproperty
+                //int remIndex = (int)btn.getClientProperty("numeroAluno");
+                
+                removeAlunoObj(aluno);
             };
-            addEvent(removerAluno, removeBtn);
+            
+            // rename verNotasABtn para verNotasBtn
+            ActionListener verNotasABtnEvt = (ActionEvent ae) -> {
+                verNotasView(aluno);
+            };
+            
+            addEvent(removerAluno, removeBtnEvt);
+            addEvent(verNotas, verNotasABtnEvt);
         }
         
         mainContent.setBackground(Color.yellow);
         render(mainContent);
     }
     
-    // mudar de sitio
-    public void removeAlunoObj(Aluno aluno) {
-        Escola.remAluno(aluno);
-        geralView();
+    public void verNotasView(Aluno aluno) {
+        JPanel mainContent = new JPanel(new GridLayout(100,1));
+        /*
+        for (Nota nota : aluno.getNotas()) {
+            JPanel holder = new JPanel();
+            
+            JLabel cadeiraLabel = new JLabel(nota.getCadeira().getNome());
+            JLabel valorLabel = new JLabel(String.valueOf(nota.getValor()));
+            
+            holder.add(cadeiraLabel);
+            holder.add(valorLabel);
+            
+            mainContent.add(holder);
+        }*/
+        for (int i = 0; i < Escola.cadeirasLength(); i++) {
+            boolean hasTitulo = false;
+            Cadeira cadeira = Escola.getCadeira(i);
+            
+            for(Nota nota : aluno.getNotas()) {
+                
+                JPanel holder = new JPanel();
+                
+                if(nota.getCadeira() == cadeira) {
+                    if(!hasTitulo) {
+                        JLabel cadeiraLabel = new JLabel(nota.getCadeira().getNome());
+                        JLabel valorLabel = new JLabel(String.valueOf(nota.getValor()));
+                        holder.add(cadeiraLabel);
+                        holder.add(valorLabel);
+                        hasTitulo = true;
+                    } else {
+                        JLabel valorLabel = new JLabel(String.valueOf(nota.getValor()));
+                        holder.add(valorLabel);
+                    }
+                    
+                    
+                    mainContent.add(holder);
+                }
+            }
+            
+            
+        }
+        
+        render(mainContent);
     }
+    
     
     public void addAlunoView() {
         
@@ -191,21 +224,28 @@ public class EscolaView extends JFrame implements ActionListener {
             String nome = nomeTf.getText();
             int idade = Integer.parseInt(idadeTf.getText());
             String email = emailTf.getText();
-            // como ir burcar o indice à combobox, talvez ir buscar o obj directamente
+            // como ir buscar o indice à combobox, talvez ir buscar o obj directamente
             int cursoIndex = 0;
+            Curso curso = Escola.getCurso(0);
             
-            Aluno aluno = new Aluno(cursoIndex, nome, idade, email);
+            Aluno aluno = new Aluno(curso, cursoIndex, nome, idade, email);
             
             // adicionar a um curso especifico
             Escola.addAluno(aluno);
            
             // colocar mais excepcoes
         } catch(Exception ex) {
-            JOptionPane.showMessageDialog(mainFrame, "Erro");
+//            JOptionPane.showMessageDialog(mainFrame, "Erro");
+            ex.printStackTrace();
         } finally {
             clearInput(nomeTf, idadeTf, emailTf);
         }
         
+    }
+    
+    public void removeAlunoObj(Aluno aluno) {
+        Escola.remAluno(aluno);
+        geralView();
     }
     
     public void resetAlunoInput(JTextField nomeTf, JTextField idadeTf, JTextField emailTf) {
@@ -225,7 +265,8 @@ public class EscolaView extends JFrame implements ActionListener {
             // adicionar a um curso especifico
             CursosList.get(1).addCadeira(cadeira);
         } catch(Exception ex) {
-            JOptionPane.showMessageDialog(mainFrame, "Erro");
+//            JOptionPane.showMessageDialog(mainFrame, "Erro");
+            ex.printStackTrace();
         } finally {
             clearInput(nomeTf, professorTf, emailProfessorTf, codigoClassroomTf, creditosTf);
         }   

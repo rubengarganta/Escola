@@ -94,6 +94,11 @@ public class Escola {
         CursosList.add(curso3);
         CursosList.add(curso4);
         CursosList.add(curso5);
+        Escola.addCurso(curso1);
+        Escola.addCurso(curso2);
+        Escola.addCurso(curso3);
+        Escola.addCurso(curso4);
+        Escola.addCurso(curso5);
         
         Escola.addCurso(curso5);
         System.out.println("DEBUG" + Escola.getCurso(0).getNomeCurso());
@@ -105,13 +110,13 @@ public class Escola {
         System.out.println(CursosList.get(1).getCadeira(0).getNumero());
         System.out.println(CursosList.get(1).getCadeira(0));
         
-        Aluno aluno1 = new Aluno(0, "Andre1");
-        Aluno aluno2 = new Aluno(0, "Andre2");
-        Aluno aluno3 = new Aluno(0, "Andre3");
-        Aluno aluno4 = new Aluno(0, "Andre4");
-        Aluno aluno5 = new Aluno(0, "Andre5");
-        Aluno aluno6 = new Aluno(0, "Andre6");
-        Aluno aluno7 = new Aluno(0, "Ruben");
+        Aluno aluno1 = new Aluno(curso1, 0, "Andre1");
+        Aluno aluno2 = new Aluno(curso2, 0, "Andre2");
+        Aluno aluno3 = new Aluno(curso3, 0, "Andre3");
+        Aluno aluno4 = new Aluno(curso4, 0, "Andre4");
+        Aluno aluno5 = new Aluno(curso5, 0, "Andre5");
+        Aluno aluno6 = new Aluno(curso2, 0, "Andre6");
+        Aluno aluno7 = new Aluno(curso4, 0, "Ruben");
         Escola.addAluno(aluno1);
         Escola.addAluno(aluno2);
         Escola.addAluno(aluno3);
@@ -119,17 +124,30 @@ public class Escola {
         Escola.addAluno(aluno5);
         Escola.addAluno(aluno6);
         Escola.addAluno(aluno7);
-        CursosList.get(0).addAluno(aluno1);
-        CursosList.get(1).addAluno(aluno2);
-        CursosList.get(2).addAluno(aluno3);
-        CursosList.get(4).addAluno(aluno4);
-        CursosList.get(1).addAluno(aluno5);
-        CursosList.get(1).addAluno(aluno6);
-        CursosList.get(1).addAluno(aluno7);
+
         
-        System.out.println(CursosList.get(1).getAluno(0).getNumero());
+        Cadeira cadeira1 = new Cadeira("AED", "John Cena", 3);
+        Cadeira cadeira2 = new Cadeira("DDM", "Joana Cena", 6);
+        Escola.addCadeira(cadeira1);
+        Escola.addCadeira(cadeira2);
         
-        System.out.println(CursosList.get(0).alunosLength());
+        Nota nota1 = new Nota(Escola.getCadeira(1), 10f);
+        Nota nota2 = new Nota(Escola.getCadeira(1), 10f);
+        Nota nota3 = new Nota(Escola.getCadeira(1), 10f);
+        Nota nota4 = new Nota(Escola.getCadeira(1), 10f);
+        Nota nota5 = new Nota(Escola.getCadeira(0), 10f);
+        Nota nota6 = new Nota(Escola.getCadeira(0), 10f);
+        Nota nota7 = new Nota(Escola.getCadeira(0), 10f);
+        Nota nota8 = new Nota(Escola.getCadeira(0), 10f);
+        
+        Escola.getAluno(0).addNota(nota1);
+        Escola.getAluno(0).addNota(nota2);
+        Escola.getAluno(0).addNota(nota3);
+        Escola.getAluno(0).addNota(nota4);
+        Escola.getAluno(0).addNota(nota5);
+        Escola.getAluno(0).addNota(nota6);
+        Escola.getAluno(0).addNota(nota7);
+        Escola.getAluno(0).addNota(nota8);
         
         EscolaView mainView = new EscolaView();
         

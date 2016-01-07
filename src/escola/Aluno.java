@@ -5,6 +5,8 @@
  */
 package escola;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author aRomano
@@ -13,26 +15,38 @@ public final class Aluno {
     //      Metodos de Class
     private static int ultimoAluno = 0;
     
-    public static int novoAluno() {
-        int numero = ++ultimoAluno;
-        return numero;
-    }
-    
     //     Metodos de Objecto 
     private String nome;
     private final int numero;
     private int idade;
     private String email;
     private int cursoIndex;
+    private Curso curso;
     // estado do aluno: "matriculado", "inactivo"
     private String estado;  // mudar para bool isMatriculado
     // array com 100 linhas por 20 colunas, cada linha representa uma disciplina
     // o indice de cada linha no array representa o numero da disciplina,
     // ie. matematica eh disciplina numero 0, logo eh representada em notas[0]
     // a primeira coluna representa a quantidade de notas naquela disciplina
-    private final float[][] notas = new float[100][20];
+    //private final float[][] notas = new float[100][20];
+    private final ArrayList<Nota> Notas = new ArrayList<>();
+    
+    public void addNota(Nota nota) {
+        Notas.add(nota);
+    }
+    
+    public ArrayList<Nota> getNotas() {
+        return Notas;
+    }
     
     
+    public Curso getCurso() {
+        return this.curso;
+    }
+    
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
     
     public int getCursoIndex() {
         return cursoIndex;
@@ -65,7 +79,7 @@ public final class Aluno {
     public String getEmail() {
         return this.email;
     }
-    
+    /*
     public void setNotas(int disciplina, float nota) {
         // sanitize
         if(nota < 0 || nota > 20) {
@@ -86,7 +100,7 @@ public final class Aluno {
         float nota = this.notas[disciplina][index];
         return nota;
     }
-    
+    */
     
     public void setEstado(String novoEstado) {
         // sanitize
@@ -111,7 +125,7 @@ public final class Aluno {
         return this.estado;
     }
     
-    
+    /*
     // retorna media total do aluno
     public float getMedia() {
         int totalNotas = 0;
@@ -151,28 +165,34 @@ public final class Aluno {
 
         return media;
     }
+    */
     
     
     // Construtores
-    Aluno(int cursoIndex, String nome, int idade, String email) {
+    Aluno(Curso curso, int cursoIndex, String nome, int idade, String email) {
+        this.curso = curso;
         this.cursoIndex = cursoIndex;
         this.nome = nome;
         this.idade = idade;
         this.email = email;
-        this.numero = Aluno.novoAluno();
         this.setEstado("matriculado");
+        this.numero = ultimoAluno;
+        ultimoAluno++;
     }
     
-    Aluno(int cursoIndex, String nome, String email) {
+    Aluno(Curso curso, int cursoIndex, String nome, String email) {
+        this.curso = curso;
         this.cursoIndex = cursoIndex;
         this.nome = nome;
         this.idade = 0;
         this.email = email;
-        this.numero = Aluno.novoAluno();
         this.setEstado("matriculado");
+        this.numero = ultimoAluno;
+        ultimoAluno++;
     }
     
-    Aluno(int cursoIndex, String nome) {
+    Aluno(Curso curso, int cursoIndex, String nome) {
+        this.curso = curso;
         this.cursoIndex = cursoIndex;
         this.nome = nome;
         this.idade = 0;
